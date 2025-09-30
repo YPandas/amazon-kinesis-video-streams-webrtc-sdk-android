@@ -16,6 +16,24 @@ android {
         versionName "1.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        
+        // Default BuildConfig fields
+        buildConfigField "String", "CUSTOM_ENDPOINT", "null"
+        
+        // Load .env file
+        def envFile = rootProject.file('.env')
+        if (envFile.exists()) {
+            envFile.readLines().each {
+                def (key, value) = it.tokenize('=')
+                if (key && value) {
+                    buildConfigField "String", key, "\"${value}\""
+                }
+            }
+        }
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 
     buildTypes {
