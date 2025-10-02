@@ -10,7 +10,7 @@
  `git clone https://github.com/awslabs/amazon-kinesis-video-streams-webrtc-sdk-android.git`
 
 
-### 2. Create a user pool
+### 2. Create a user pool 
 
  Follow the instructions [here](https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/producersdk-android-prerequisites.html#set-up-user-pool) to set up an Amazon Cognito user pool for secure login.
 
