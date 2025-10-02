@@ -45,6 +45,11 @@ public class StartUpActivity extends AppCompatActivity {
             
             if (hasCustomCredentials || auth.isSignedIn()) {
                 Log.i(TAG, hasCustomCredentials ? "Using custom credentials, skipping sign-in" : "User already signed in");
+                
+                if (hasCustomCredentials) {
+                    showCredentialsWarning();
+                }
+                
                 ActivityUtils.startActivity(thisActivity, SimpleNavActivity.class);
             } else {
                 auth.showSignIn(thisActivity,
@@ -91,5 +96,9 @@ public class StartUpActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+    
+    private void showCredentialsWarning() {
+        Log.w(TAG, "WARNING: Using hard-coded AWS IAM credentials for development testing - Do not use this in production");
     }
 }
