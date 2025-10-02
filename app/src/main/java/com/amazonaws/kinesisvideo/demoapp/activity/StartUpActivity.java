@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.amazonaws.kinesisvideo.demoapp.BuildConfig;
 import com.amazonaws.kinesisvideo.demoapp.R;
 import com.amazonaws.kinesisvideo.demoapp.util.ActivityUtils;
 import com.amazonaws.mobile.client.AWSMobileClient;
@@ -31,7 +32,19 @@ public class StartUpActivity extends AppCompatActivity {
         supportFinishAfterTransition();
 
         AsyncTask.execute(() -> {
-            if (auth.isSignedIn()) {
+            // Check if custom credentials are available in .env
+            boolean hasCustomCredentials = false;
+            try {
+                String accessKeyId = BuildConfig.AWS_ACCESS_KEY_ID;
+                String secretAccessKey = BuildConfig.AWS_SECRET_ACCESS_KEY;
+                hasCustomCredentials = accessKeyId != null && !accessKeyId.isEmpty() && !"null".equals(accessKeyId) &&
+                                     secretAccessKey != null && !secretAccessKey.isEmpty() && !"null".equals(secretAccessKey);
+            } catch (Exception e) {
+                Log.w(TAG, "Failed to check custom credentials: " + e.getMessage());
+            }
+            
+            if (hasCustomCredentials || auth.isSignedIn()) {
+                Log.i(TAG, hasCustomCredentials ? "Using custom credentials, skipping sign-in" : "User already signed in");
                 ActivityUtils.startActivity(thisActivity, SimpleNavActivity.class);
             } else {
                 auth.showSignIn(thisActivity,
