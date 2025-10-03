@@ -33,20 +33,20 @@ public class StartUpActivity extends AppCompatActivity {
 
         AsyncTask.execute(() -> {
             // Check if custom credentials are available in .env
-            boolean hasCustomCredentials = false;
+            boolean hasEnvSetting = false;
             try {
                 String accessKeyId = BuildConfig.AWS_ACCESS_KEY_ID;
                 String secretAccessKey = BuildConfig.AWS_SECRET_ACCESS_KEY;
-                hasCustomCredentials = accessKeyId != null && !accessKeyId.isEmpty() && !"null".equals(accessKeyId) &&
+                hasEnvSetting = accessKeyId != null && !accessKeyId.isEmpty() && !"null".equals(accessKeyId) &&
                                      secretAccessKey != null && !secretAccessKey.isEmpty() && !"null".equals(secretAccessKey);
             } catch (Exception e) {
                 Log.w(TAG, "Failed to check custom credentials: " + e.getMessage());
             }
             
-            if (hasCustomCredentials || auth.isSignedIn()) {
-                Log.i(TAG, hasCustomCredentials ? "Using custom credentials, skipping sign-in" : "User already signed in");
+            if (hasEnvSetting || auth.isSignedIn()) {
+                Log.i(TAG, hasEnvSetting ? "Using custom credentials, skipping sign-in" : "User already signed in");
                 
-                if (hasCustomCredentials) {
+                if (hasEnvSetting) {
                     showCredentialsWarning();
                 }
                 
@@ -99,6 +99,6 @@ public class StartUpActivity extends AppCompatActivity {
     }
     
     private void showCredentialsWarning() {
-        Log.w(TAG, "WARNING: Using hard-coded AWS IAM credentials for development testing - Do not use this in production");
+        Log.w(TAG, "WARNING: Using environment settings - please follow standard AWS recommended practices for production (https://aws.amazon.com/cognito/);");
     }
 }

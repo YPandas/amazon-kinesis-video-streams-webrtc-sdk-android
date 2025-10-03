@@ -50,7 +50,7 @@ public class SimpleNavActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         
         // Disable logout menu item if using custom credentials
-        if (hasCustomCredentials()) {
+        if (hasEnvSetting()) {
             navigationView.getMenu().findItem(R.id.nav_logout).setEnabled(false);
         }
 
@@ -77,7 +77,7 @@ public class SimpleNavActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_logout) {
-            if (hasCustomCredentials()) {
+            if (hasEnvSetting()) {
                 Log.i(TAG, "Logout disabled when using custom credentials from .env file");
                 return true;
             }
@@ -124,7 +124,7 @@ public class SimpleNavActivity extends AppCompatActivity
         }
     }
     
-    private boolean hasCustomCredentials() {
+    private boolean hasEnvSetting() {
         try {
             String accessKeyId = BuildConfig.AWS_ACCESS_KEY_ID;
             String secretAccessKey = BuildConfig.AWS_SECRET_ACCESS_KEY;
